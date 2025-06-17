@@ -12,14 +12,8 @@ HEARTBEAT_INTERVAL = 120
 CHECK_INTERVAL = 30 
 
 APPS = [
-    {
-        "process_name": "Autodesk Fusion",
-        "window_keyword": "fusion",
-        "project": "Fusion",
-        "language": "3D Modeling",
-        "plugin": "general-wakatime"
-    },
     """
+    Insert code block from /apps here
     {
         "process_name": "",
         "window_keyword": "",
