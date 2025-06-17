@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>Time Spent:</h2>
+    <canvas id="usageChart" width="600" height="300"></canvas>
+
+    <script>
+        const labels = {{ usage.keys()|list|tojson }};
+        const dataValues = {{ usage.values()|list|tojson }};
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: '(min)',
+                data: dataValues,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Minutos'
+                        }
+                    }
+                }
+            }
+        };
+
+        new Chart(document.getElementById('usageChart'), config);
+    </script>
+</body>
+</html>
