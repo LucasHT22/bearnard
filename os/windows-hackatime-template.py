@@ -6,6 +6,7 @@ import json
 import psutil
 from datetime import datetime
 import pygetwindow as gw
+import pyautogui
 
 WAKATIME_API_KEY = 'YOUR_WAKATIME_API_KEY'
 HEARTBEAT_INTERVAL = 120 
@@ -38,6 +39,12 @@ def get_active_window_title():
     except:
         pass
     return None
+
+def user_is_active(threshold_seconds=CHECK_INTERVAL):
+    pos1 = pyautogui.position()
+    time.sleep(threshold_seconds)
+    pos2 = pyautogui.position()
+    return pos1 != pos2 and get_active_window_title() == window_title
 
 def send_heartbeat(entity, app_config):
     encoded_key = base64.b64encode(WAKATIME_API_KEY.encode()).decode()
@@ -80,12 +87,11 @@ def main():
         for app in APPS:
             if is_process_running(app['process_name']):
                 if current_title and app['window_keyword'].lower() in current_title.lower():
-                    if now - last_sent[app['process_name']] > HEARTBEAT_INTERVAL or current_title != last_window[app['process_name']]:
-                        send_heartbeat(current_title, app)
-                        last_sent[app['process_name']] = now
-                        last_window[app['process_name']] = current_title
-
-        time.sleep(CHECK_INTERVAL)
+                    if user_is_active():
+                        if now - last_sent[app['process_name']] > HEARTBEAT_INTERVAL or current_title != last_window[app['process_name']]:
+                            send_heartbeat(current_title, app)
+                            last_sent[app['process_name']] = now
+                            last_window[app['process_name']] = current_title
 
 if __name__ == "__main__":
     main()
