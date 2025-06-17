@@ -1,47 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8" />
+    <title>Usage Dashboard - General Wakatime</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 50%; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f4f4f4; }
+    </style>
 </head>
 <body>
-    <h2>Time Spent:</h2>
-    <canvas id="usageChart" width="600" height="300"></canvas>
-
-    <script>
-        const labels = {{ usage.keys()|list|tojson }};
-        const dataValues = {{ usage.values()|list|tojson }};
-
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: '(min)',
-                data: dataValues,
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        };
-
-        const config = {
-            type: 'bar',
-            data: data,
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Minutos'
-                        }
-                    }
-                }
-            }
-        };
-
-        new Chart(document.getElementById('usageChart'), config);
-    </script>
+    <h2>Time Spent per Application (minutes)</h2>
+    {% if labels and values %}
+    <table>
+        <thead>
+            <tr>
+                <th>Application</th>
+                <th>Time Spent (min)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for label, value in zip(labels, values) %}
+            <tr>
+                <td>{{ label }}</td>
+                <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No usage data found.</p>
+    {% endif %}
 </body>
 </html>
