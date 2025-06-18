@@ -87,7 +87,7 @@ def main():
         for app in APPS:
             if is_process_running(app['process_name']):
                 if current_title and app['window_keyword'].lower() in current_title.lower():
-                    if user_is_active():
+                    if user_is_active(window_title=current_title):
                         if now - last_sent[app['process_name']] > HEARTBEAT_INTERVAL or current_title != last_window[app['process_name']]:
                             send_heartbeat(current_title, app)
                             last_sent[app['process_name']] = now

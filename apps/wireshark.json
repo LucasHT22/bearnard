@@ -1,0 +1,7 @@
+{
+    "process_name": "Wireshark.exe",
+    "window_keyword": "wireshark",
+    "project": "Wireshark",
+    "language": "Network Analysis",
+    "plugin": "general-wakatime"
+}  
