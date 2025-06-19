@@ -1,0 +1,7 @@
+{
+    "process_name": "rubymine64.exe",
+    "window_keyword": "rubymine",
+    "project": "RubyMine",
+    "language": "Ruby",
+    "plugin": "general-wakatime"
+}

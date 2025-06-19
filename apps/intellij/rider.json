@@ -1,0 +1,7 @@
+{
+    "process_name": "rider64.exe",
+    "window_keyword": "rider",
+    "project": "Rider",
+    "language": ".NET",
+    "plugin": "general-wakatime"
+}

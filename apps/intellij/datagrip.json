@@ -1,0 +1,7 @@
+{
+    "process_name": "datagrip64.exe",
+    "window_keyword": "datagrip",
+    "project": "DataGrip",
+    "language": "SQL",
+    "plugin": "general-wakatime"
+}

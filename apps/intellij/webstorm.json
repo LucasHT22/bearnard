@@ -1,0 +1,7 @@
+{
+    "process_name": "webstorm64.exe",
+    "window_keyword": "webstorm",
+    "project": "WebStorm",
+    "language": "JavaScript",
+    "plugin": "general-wakatime"
+}

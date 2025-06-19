@@ -1,0 +1,7 @@
+{
+    "process_name": "goland64.exe",
+    "window_keyword": "goland",
+    "project": "GoLand",
+    "language": "Go",
+    "plugin": "general-wakatime"
+}
