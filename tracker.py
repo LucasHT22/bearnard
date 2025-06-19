@@ -40,11 +40,16 @@ def get_active_window_title():
         pass
     return None
 
-def user_is_active(threshold_seconds=CHECK_INTERVAL):
+def user_is_active(window_title=None, threshold_seconds=CHECK_INTERVAL):
     pos1 = pyautogui.position()
     time.sleep(threshold_seconds)
     pos2 = pyautogui.position()
     return pos1 != pos2 and get_active_window_title() == window_title
+
+def save_heartbeat_local(payload):
+    with open("heartbeats.json", "a", encoding='utf-8') as f:
+        json.dump(payload, f)
+        f.write("\n")
 
 def send_heartbeat(entity, app_config):
     encoded_key = base64.b64encode(WAKATIME_API_KEY.encode()).decode()
@@ -71,6 +76,7 @@ def send_heartbeat(entity, app_config):
     try:
         with urllib.request.urlopen(req) as response:
             print(f"[{datetime.now()}] Heartbeat: {entity} -> {app_config['project']} ({response.status})")
+            save_heartbeat_local(payload)
     except urllib.error.HTTPError as e:
         print(f"[{datetime.now()}] HTTP error: {e.code} - {e.reason}")
     except urllib.error.URLError as e:
