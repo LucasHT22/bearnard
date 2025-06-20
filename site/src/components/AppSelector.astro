@@ -18,16 +18,66 @@
 		background-color: #192841;
 		color: #c3fffc;
 		text-decoration: none;
-		padding: 5px;
-		border-radius: 5px;
+		padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 6px;
+        position: relative;
         border: 1px solid #192841;
 	}
 	button:hover {
 		background-color: #c3fffc;
 		color: #192841;
 		text-decoration: none;
-		padding: 5px;
-		border-radius: 5px;
+		padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 6px;
+        position: relative;
+		border: 1px solid #192841;
+	}
+    .btn-coming-soon {
+        background-color: #31363f;
+        color: #c3fffc;
+        border: 1px solid #31363f;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: not-allowed;
+        position: relative;
+    }
+
+    .btn-coming-soon:hover::after {
+        border: 1px solid #192841;
+        content: "Coming Soon!";
+        position: absolute;
+        top: 120%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #c3fffc;
+        color: #192841;
+        padding: 6px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        white-space: nowrap;
+        z-index: 100;
+    }
+    a {
+		background-color: #192841;
+		color: #c3fffc;
+		text-decoration: none;
+		padding: 10px 20px;
+		font-size: 16px;
+		border-radius: 6px;
+		position: relative;
+    	border: 1px solid #192841;
+	}
+	a:hover {
+		background-color: #c3fffc;
+		color: #192841;
+		text-decoration: none;
+		padding: 10px 20px;
+		font-size: 16px;
+		border-radius: 6px;
+		position: relative;
 		border: 1px solid #192841;
 	}
 </style>
@@ -152,6 +202,27 @@
     }
     };
 
+    (window as Record<string, any>).copyToClipboard = () => {
+        const el = document.getElementById('preview');
+        if (!el) return;
+        
+        const text = el.textContent;
+        navigator.clipboard.writeText(text)
+            .then(() => alert("Copied to clipboard!"))
+            .catch(err => alert("Failed to copy: " + err));
+    }
+
+    (window as Record<string, any>).downloadPython = () => {
+        const blob = new Blob([preview], { type: "text/x-python" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'tracker.py';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
 
     fetch('/api/apps')
     .then(res => res.json())
@@ -183,7 +254,11 @@
     <div style="align-items: center; justify-content: center; display: flex;">
         <form id="app-form" style="text-align: left;"></form>
     </div>
+
+    <br />
     
+    <a href="/contribute">I want another app!</a>
+    <br />
     <br />
 
     <label>
@@ -201,7 +276,15 @@
 
     <br />
 
-    <button type="button" onclick="">Download tracker.py</button>
+    <button type="button" onclick="copyToClipboard()">Copy to Clipboard</button>
 
-    <button type="button" onclick="">Download .exe</button>
+    <button type="button" onclick="downloadPython()">Download tracker.py</button>
+
+    <button type="button" class="btn-coming-soon" onclick="alert('Coming Soon!')">Download .exe</button>
+
+    <br />
+    <br />
+
+    <a href="/next">What's next?</a>
+    
 </div>

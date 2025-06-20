@@ -2,7 +2,7 @@
 import Main from "../layouts/Main.astro"
 ---
 
-<Main page="Welcome!">
+<Main page="Contributing">
 	<style>
 		a {
 			background-color: #192841;
@@ -24,7 +24,7 @@ import Main from "../layouts/Main.astro"
 			position: relative;
 			border: 1px solid #192841;
 		}
-		.banner {
+        .banner {
 			background-color: #ec3750;
 			color: white;
 			text-align: center;
@@ -60,48 +60,42 @@ import Main from "../layouts/Main.astro"
 			}
 		}
 
-		.btn-coming-soon {
-			background-color: #31363f;
-			color: #c3fffc;
-			border: 1px solid #31363f;
-			padding: 10px 20px;
-			font-size: 16px;
-			border-radius: 6px;
-			cursor: not-allowed;
-			position: relative;
-		}
-
-		.btn-coming-soon:hover::after {
-			border: 1px solid #192841;
-			content: "Coming Soon!";
-			position: absolute;
-			top: 120%;
-			left: 50%;
-			transform: translateX(-50%);
-			background-color: #c3fffc;
-			color: #192841;
-			padding: 6px 10px;
-			border-radius: 4px;
-			font-size: 14px;
-			white-space: nowrap;
-			z-index: 100;
-		}
+        pre, code {
+            background: #1a1a1a;
+            padding: 10px;
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 400px;
+            width: 50vw;
+            color: #0f0;
+            text-align: left;
+            box-sizing: border-box;
+            white-space: pre;
+            margin: 0;
+        }
 	</style>
-	<div class="banner" id="banner">
-		Currently ONLY Windows!
+    <div class="banner" id="banner">
+		Use it wisely! Be careful about the type of app you want to add.
 		<button class="close-banner" onclick="document.getElementById('banner').style.display='none';">✕</button>
 	</div>
-	<h1>Hey, I'm Bearnard!</h1>
-	<h2>I promise I'll bear with you, let's make your own WakaTime tracker?</h2>
-	<a href="/go">Let's go! (Windows)</a>
-	
-	<a href="/go" class="btn-coming-soon" onclick="alert('Coming Soon!')">Let's go! (Mac)</a>
-	
-	<a href="/go" class="btn-coming-soon" onclick="alert('Coming Soon!')">Let's go! (Linux)</a>
 
-	<br />
-	<br />
-	<br />
+	<h1>Here's a step by step:</h1>
+	
+    <h2>1. Get process name</h2>
+    <p>Do not trust Task Manager, use <code>tasklist</code> on <code>cmd</code>.</p>
 
-	<a href="https://github.com/LucasHT22/bearnard">Jump to GitHub!</a>
+    <h2>2. Fill out the template</h2>
+    <pre>
+        &#123;
+            "process_name": ".exe",
+            "window_keyword": "",
+            "project": "",
+            "language": "",
+            "plugin": "bearnard"
+        &#123;
+    </pre>
+
+    <h2>3. Contribute to the repo!</h2>
+
+    <a href="https://github.com/LucasHT22/bearnard">Go to GitHub!</a>
 </Main>
