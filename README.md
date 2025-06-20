@@ -61,4 +61,4 @@ The answer is: Process tracking. Every app runs as a system process, so why not 
 
 From that idea, General WakaTime was born, a cross-platform tracker that now supports 27 different applications and counting.
 
-Shoutout to Ruby for name suggestion
+Shoutout to Ruby for name suggestion!
