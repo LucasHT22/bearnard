@@ -1,0 +1,48 @@
+---
+const { page } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/x-icon" href="/bearnard.png">
+    <title>{page} - Bearnard</title>
+</head>
+<body>
+    <style>
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #c3fffc;
+        }
+        .main {
+            color: #192841;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            padding: 2rem;
+            gap: 2rem;
+            text-align: center;
+        }
+		#image img {
+            max-width: 100%;
+            height: auto;
+        }
+        @media (max-width: 768px) {
+            .main {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <div class="main">
+		<div id="image">
+			<img src="../bearnard.png" height="300px">
+		</div>
+		<div id="text">
+            <slot />
+        </div>
+    </div>
+</body>
+</html>

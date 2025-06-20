@@ -1,0 +1,211 @@
+---
+---
+<style>
+    #preview {
+        background: #1a1a1a;
+        padding: 10px;
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 400px;
+        width: 50vw;
+        color: #0f0;
+        text-align: left;
+        box-sizing: border-box;
+        white-space: pre;
+        margin: 0;
+    }
+    button {
+		background-color: #192841;
+		color: #c3fffc;
+		text-decoration: none;
+		padding: 5px;
+		border-radius: 5px;
+        border: 1px solid #192841;
+	}
+	button:hover {
+		background-color: #c3fffc;
+		color: #192841;
+		text-decoration: none;
+		padding: 5px;
+		border-radius: 5px;
+		border: 1px solid #192841;
+	}
+</style>
+<script>
+    let selected: any[] = [];
+    let apiKey = '';
+    let preview = '';
+    let apps = [];
+
+    const generateTracker = (selectedApps: any[], apiKey: string) => {
+    const appsBlock = selectedApps
+        .map((app: { data: any; }) => JSON.stringify(app.data, null, 4))
+        .join(',\n');
+
+    return `import time
+    import base64
+    import urllib.request
+    import urllib.error
+    import json
+    import psutil
+    from datetime import datetime
+    import pygetwindow as gw
+    import pyautogui
+
+    WAKATIME_API_KEY = '${apiKey}'
+    HEARTBEAT_INTERVAL = 120 
+    CHECK_INTERVAL = 30 
+
+    APPS = [
+    ${appsBlock}
+    ]
+
+    def is_process_running(name):
+        for proc in psutil.process_iter(['name']):
+            if name.lower() in (proc.info['name'] or "").lower():
+                return True
+        return False
+
+    def get_active_window_title():
+        try:
+            win = gw.getActiveWindow()
+            if win:
+                return win.title.strip()
+        except:
+            pass
+        return None
+
+    def user_is_active(window_title=None, threshold_seconds=CHECK_INTERVAL):
+        pos1 = pyautogui.position()
+        time.sleep(threshold_seconds)
+        pos2 = pyautogui.position()
+        return pos1 != pos2 and get_active_window_title() == window_title
+
+    def save_heartbeat_local(payload):
+        with open("heartbeats.json", "a", encoding='utf-8') as f:
+            json.dump(payload, f)
+            f.write("\n")
+
+    def send_heartbeat(entity, app_config):
+        encoded_key = base64.b64encode(WAKATIME_API_KEY.encode()).decode()
+        headers = {
+            "Authorization": f"Basic {encoded_key}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "time": datetime.utcnow().timestamp(),
+            "entity": entity,
+            "type": "app",
+            "category": "coding",
+            "is_write": False,
+            "project": app_config['project'],
+            "language": app_config['language'],
+            "plugin": app_config['plugin']
+        }
+        req = urllib.request.Request(
+            url='https://hackatime.hackclub.com/api/hackatime/v1/users/current/heartbeats',
+            data=json.dumps(payload).encode('utf-8'),
+            headers=headers,
+            method='POST'
+        )
+        try:
+            with urllib.request.urlopen(req) as response:
+                print(f"[{datetime.now()}] Heartbeat: {entity} -> {app_config['project']} ({response.status})")
+                save_heartbeat_local(payload)
+        except urllib.error.HTTPError as e:
+            print(f"[{datetime.now()}] HTTP error: {e.code} - {e.reason}")
+        except urllib.error.URLError as e:
+            print(f"[{datetime.now()}] Network error: {e.reason}")
+
+    def main():
+        last_sent = {app['process_name']: 0 for app in APPS}
+        last_window = {app['process_name']: "" for app in APPS}
+
+        while True:
+            now = time.time()
+            current_title = get_active_window_title()
+
+            for app in APPS:
+                if is_process_running(app['process_name']):
+                    if current_title and app['window_keyword'].lower() in current_title.lower():
+                        if user_is_active(window_title=current_title):
+                            if now - last_sent[app['process_name']] > HEARTBEAT_INTERVAL or current_title != last_window[app['process_name']]:
+                                send_heartbeat(current_title, app)
+                                last_sent[app['process_name']] = now
+                                last_window[app['process_name']] = current_title
+
+    if __name__ == "__main__":
+        main()`;
+    };
+
+    const updatePreview = () => {
+        preview = generateTracker(selected, apiKey);
+        const el = document.getElementById('preview');
+        if (el) el.textContent = preview;
+    };
+
+    (window as Record<string, any>).applyApiKey = () => {
+    const input = document.getElementById('api-key');
+    if (input instanceof HTMLInputElement) {
+        apiKey = input.value.trim();
+        updatePreview();
+    }
+    };
+
+
+    fetch('/api/apps')
+    .then(res => res.json())
+    .then(json => {
+        apps = json;
+        const container = document.getElementById('app-form');
+        if (container) {
+        container.innerHTML = '';
+        apps.forEach((app: { name: any; }) => {
+            const label = document.createElement('label');
+            label.style.display = 'block';
+            label.innerHTML = `<input type='checkbox' value='${app.name}'> ${app.name}`;
+            label.querySelector('input').addEventListener('change', (e) => {
+            const isChecked = e.currentTarget.checked;
+            if (isChecked) {
+                selected.push(app);
+            } else {
+                selected = selected.filter(a => a.name !== app.name);
+            }
+            updatePreview();
+            });
+            container.appendChild(label);
+        });
+        }
+    });
+</script>
+<div>
+    <h1>Select your apps!</h1>
+    <form id="app-form"></form>
+
+    <br />
+
+    <label>
+        API Key:
+        <input id="api-key" type="text" placeholder="YOUR_WAKATIME_API_KEY" />
+    </label>
+
+    <br />
+    <br />
+
+    <button type="button" onclick="applyApiKey()">Add API Key</button>
+    
+    <h2>Preview:</h2>
+    <pre id="preview"></pre>
+
+    <br />
+
+    <button type="button" onclick="
+    const output = generateTracker(selected, apiKey);
+    const blob = new Blob([output], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.click()">Download tracker.py</button>
+
+    <button type="button" onclick="window.open('/tracker.exe', '_blank')">Download .exe</button>
+</div>
