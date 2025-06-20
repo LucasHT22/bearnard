@@ -199,13 +199,7 @@
 
     <br />
 
-    <button type="button" onclick="
-    const output = generateTracker(selected, apiKey);
-    const blob = new Blob([output], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.click()">Download tracker.py</button>
+    <button type="button" onclick="">Download tracker.py</button>
 
-    <button type="button" onclick="window.open('/tracker.exe', '_blank')">Download .exe</button>
+    <button type="button" onclick="">Download .exe</button>
 </div>
