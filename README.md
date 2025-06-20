@@ -1,7 +1,11 @@
-# General Wakatime (Currently only Windows!)
-A robust, reliable and universal system to use Wakatime in almost any App.
-
-Supporting 27 different applications and counting.
+<div align="center">
+<br />
+<img src="/site/public/bearnard.png" width="300">
+<br />
+<h1>Bearnard (Currently only Windows!)</h1>
+<p>A robust, reliable and universal system to use Wakatime in almost any App.</p>
+<p>Supporting 27 different applications and counting.</p>
+</div>
 
 ## Requirements
 Open `cmd`, and run:
@@ -56,3 +60,5 @@ Later on, `@guac md` reached out asking for tips on building a WakaTime plugin f
 The answer is: Process tracking. Every app runs as a system process, so why not use that as a reliable source of activity?
 
 From that idea, General WakaTime was born, a cross-platform tracker that now supports 27 different applications and counting.
+
+Shoutout to Ruby for name suggestion
