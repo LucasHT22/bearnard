@@ -12,38 +12,8 @@ Open `cmd`, and run:
 ```pip install psutil pygetwindow pyautogui flask jsonify```
 
 ## How to use?
-Step-by-step tutorial
 
-### Run the Tracker
-
-#### 1. Setting your API key
-Replace `YOUR_WAKATIME_API_KEY` with your API key.
-```WAKATIME_API_KEY = 'YOUR_WAKATIME_API_KEY'```
-
-> [!WARNING]
-> **If you're using any WakaTime version that isn't HackaTime (Hackclub) change url param in urllib.request.Request**
-
-#### 2. Setting your apps
-Insert code block from `/apps` in `APPS`, you can add as many apps you want:)
-
-##### Finding process name
-Do not trust Task Manager, use `tasklist` on `cmd`.
-
-#### 3. Run!
-Open `cmd`, and run:
-```python tracker.py```
-
-### Run the Dashboard
-
-#### 1. Run!
-Open `cmd`, and run:
-```python dashboard.py```
-
-#### Succesful examples:
-
-## Customization Possibilities
-
-You can change everything here
+Check [Bearnard](https://bearnard.devlucas.page)
 
 ## Why?
 
