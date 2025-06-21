@@ -1,0 +1,7 @@
+{
+    "process_name": "TurboWarp.exe",
+    "window_keyword": "turbowarp",
+    "project": "TurboWarp",
+    "language": "Blockly",
+    "plugin": "bearnard"
+}
