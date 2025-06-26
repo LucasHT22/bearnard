@@ -14,7 +14,7 @@ try:
 except ImportError:
     pyautogui = None
 
-WAKATIME_API_KEY = '1cf98d16-a859-4fcb-8d40-946a04a7f54c'
+WAKATIME_API_KEY = ''
 HEARTBEAT_INTERVAL = 120  # seconds
 CHECK_INTERVAL = 30       # seconds
 
