@@ -93,6 +93,7 @@
 	}
 </style>
 <script>
+import { formDataToObject } from "astro:actions";
 import { json } from "stream/consumers";
 
     let selected: any[] = [];
@@ -237,68 +238,59 @@ import { json } from "stream/consumers";
         URL.revokeObjectURL(url);
     }
 
-    const categories = [
-        { path: '', containerId: 'app-form' },
-        { path: 'chrome', containerId: 'app-form' },
-        { path: 'edge', containerId: 'app-form' },
-        { path: 'firefox', containerId: 'app-form' },
-    ];
-
-    categories.forEach(({ path, containerId }) => {
-    fetch(`/api/apps${path ? '/' + path : ''}`)
+    fetch('/api/apps')
         .then(res => res.json())
         .then(json => {
-        const container = document.getElementById(containerId);
-        if (!container) return;
-        container.innerHTML = '';
-        json.forEach((app: { name: string; data: any }) => {
-            const label = document.createElement('label');
-            label.style.display = 'block';
-            label.innerHTML = `<input type="checkbox" value="${app.name}"> ${app.name}`;
-            const input = label.querySelector('input');
-            if (input) {
-                input.addEventListener('change', (e) => {
-                    const checked = (e.currentTarget as HTMLInputElement).checked;
-                    if (checked) {
-                        selected.push(app);
-                    } else {
-                        selected = selected.filter(a => a.name !== app.name);
+            const grouped = {};
+
+            json.forEach(app => {
+                const category = app.path?.[0] || 'general';
+                if (!grouped[category]) grouped[category] = [];
+                grouped[category].push(app);
+            });
+
+            const section = document.getElementById('dynamic-apps');
+            if (!section) return;
+
+            Object.entries(grouped).forEach(([category, apps]) => {
+                const title = document.createElement('h2');
+                title.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                section.appendChild(title);
+
+                const form = document.createElement('form');
+                form.style.textAlign = 'left';
+
+                apps.forEach(app => {
+                    const label = document.createElement('label');
+                    label.style.display = 'block';
+                    label.innerHTML = `<input type="checkbox" value="${app.name}"> ${app.name}`;
+                    const input = label.querySelector('input');
+                    if (input) {
+                        input.addEventListener('change', (e) => {
+                            const checked = e.currentTarget.checked;
+                            if (checked) {
+                                if (!selected.some(a => a.name === app.name && JSON.stringify(a.data) === JSON.stringify(app.data))) {
+                                    selected.push(app);
+                                }
+                            } else {
+                                selected = selected.filter(a => a.name !== app.name);
+                            }
+                            updatePreview();
+                        });
                     }
-                    updatePreview();
+                    form.appendChild(label);
                 });
-            }
-            container.appendChild(label);
+
+                section.appendChild(form);
+            });
         });
-        });
-    });
 </script>
 <div>
     <h1>Select your apps!</h1>
-    <div style="align-items: center; justify-content: center; display: flex;">
-        <form id="app-form" style="text-align: left;"></form>
-    </div>
-
-    <br />
     
+    <div id="dynamic-apps" style="align-items: center; justify-content: center; display: flex; flex-direction: column;"></div>
+
     <a href="/contribute">I want another app!</a>
-
-    <br />
-    <h1>Chrome</h1>
-    <div style="align-items: center; justify-content: center; display: flex;">
-        <form id="app-form-chrome" style="text-align: left;"></form>
-    </div>
-
-    <br />
-    <h1>Edge</h1>
-    <div style="align-items: center; justify-content: center; display: flex;">
-        <form id="app-form-edge" style="text-align: left;"></form>
-    </div>
-
-    <br />
-    <h1>Firefox</h1>
-    <div style="align-items: center; justify-content: center; display: flex;">
-        <form id="app-form-firefox" style="text-align: left;"></form>
-    </div>
 
     <br />
     <br />
