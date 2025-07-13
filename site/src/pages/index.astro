@@ -92,9 +92,24 @@ import Main from "../layouts/Main.astro"
 			white-space: nowrap;
 			z-index: 100;
 		}
+		.btn-beta:hover::after {
+			border: 1px solid #192841;
+			content: "Beta!";
+			position: absolute;
+			top: 120%;
+			left: 50%;
+			transform: translateX(-50%);
+			background-color: #c3fffc;
+			color: #192841;
+			padding: 6px 10px;
+			border-radius: 4px;
+			font-size: 14px;
+			white-space: nowrap;
+			z-index: 100;
+		}
 	</style>
 	<div class="banner" id="banner">
-		Currently ONLY Windows!
+		MacOS and Linux versions are beta versions! Test and tell what you think, dm @lucas on Slack or send an email to lucas [at] devlucas [dot] page
 		<button class="close-banner" onclick="document.getElementById('banner').style.display='none';">✕</button>
 	</div>
 	<h1>Hey, I'm Bearnard!</h1>
@@ -103,9 +118,9 @@ import Main from "../layouts/Main.astro"
 	<div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
 	<a href="/go">Let's go! (Windows)</a>
 	
-	<a href="/go" class="btn-coming-soon" onclick="alert('Coming Soon!')">Let's go! (Mac)</a>
+	<a class="btn-beta" href="/macos/go">Let's go! (Mac)</a>
 	
-	<a href="/go" class="btn-coming-soon" onclick="alert('Coming Soon!')">Let's go! (Linux)</a>
+	<a class="btn-beta" href="/linux/go">Let's go! (Linux)</a>
 	</div>
 	<br />
 	<br />

@@ -1,0 +1,71 @@
+---
+import Main from "../../layouts/Main.astro"
+---
+
+<Main page="Next steps!">
+	<style>
+		a, button {
+			background-color: #192841;
+			color: #c3fffc;
+            margin-right: 5px;
+            margin-top: 5px;
+			text-decoration: none;
+			padding: 10px 20px;
+			font-size: 16px;
+			border-radius: 6px;
+			position: relative;
+			border: 1px solid #192841;
+		}
+		a:hover, button:hover {
+			background-color: #c3fffc;
+			color: #192841;
+            margin-right: 5px;
+            margin-top: 5px;
+			text-decoration: none;
+			padding: 10px 20px;
+			font-size: 16px;
+			border-radius: 6px;
+			position: relative;
+			border: 1px solid #192841;
+		}
+
+        pre, code {
+            background: #1a1a1a;
+            padding: 10px;
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 400px;
+            width: 50vw;
+            color: #0f0;
+            text-align: left;
+            box-sizing: border-box;
+            white-space: pre;
+            margin: 0;
+        }
+	</style>
+	<h1>You're all set!</h1>
+
+    <p>Run with <code>python tracker.py</code> on <code>cmd</code></p>
+	
+    <h2>Not working?</h2>
+
+    <p>Certify you have Python installed</p>
+
+    <p>You must grant accessibility permissions to the terminal or Python app. <br /> <br />
+        Go to: <code>System Settings</code> > <code>Privacy & Security</code> > <code>Accessibility</code> <br /> <br />
+        Then enable access for your terminal (e.g., Terminal, iTerm) or any Python app you're using.</p>
+
+    <br />
+
+    <a href="https://github.com/LucasHT22/bearnard">Jump to GitHub!</a>
+
+    <br />
+    <br />
+
+    <p>2. Run with <code>python dashboard.py</code> on <code>cmd</code></p>
+    
+    <p>3. Open <code>localhost:5000</code></p>
+
+    <h3>Not working? Check if the tracker is in the same folder.</h3>
+    <a href="../contribute">Help us! Contribute!</a>
+</Main>
