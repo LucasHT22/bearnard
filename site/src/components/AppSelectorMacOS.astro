@@ -271,7 +271,7 @@ if __name__ == "__main__":
         URL.revokeObjectURL(url);
     }
 
-    fetch('/api/apps')
+    fetch('/api/apps/macos')
     .then(res => res.json())
     .then(json => {
         apps = json;
