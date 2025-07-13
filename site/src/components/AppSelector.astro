@@ -93,6 +93,8 @@
 	}
 </style>
 <script>
+import { json } from "stream/consumers";
+
     let selected: any[] = [];
     let apiKey = '';
     let preview = '';
@@ -235,104 +237,39 @@
         URL.revokeObjectURL(url);
     }
 
-    fetch('/api/apps')
-    .then(res => res.json())
-    .then(json => {
-        apps = json;
-        const container = document.getElementById('app-form');
-        if (container) {
-        container.innerHTML = '';
-        apps.forEach((app: { name: any; }) => {
-            const label = document.createElement('label');
-            label.style.display = 'block';
-            label.innerHTML = `<input type='checkbox' value='${app.name}'> ${app.name}`;
-            label.querySelector('input').addEventListener('change', (e) => {
-            const isChecked = e.currentTarget.checked;
-            if (isChecked) {
-                selected.push(app);
-            } else {
-                selected = selected.filter(a => a.name !== app.name);
-            }
-            updatePreview();
-            });
-            container.appendChild(label);
-        });
-        }
-    });
+    const categories = [
+        { path: '', containerId: 'app-form' },
+        { path: 'chrome', containerId: 'app-form' },
+        { path: 'edge', containerId: 'app-form' },
+        { path: 'firefox', containerId: 'app-form' },
+    ];
 
-    fetch('/api/apps/edge')
-    .then(res => res.json())
-    .then(json => {
-        apps = json;
-        const container = document.getElementById('app-form-edge');
-        if (container) {
+    categories.forEach(({ path, containerId }) => {
+    fetch(`/api/apps${path ? '/' + path : ''}`)
+        .then(res => res.json())
+        .then(json => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
         container.innerHTML = '';
-        apps.forEach((app: { name: any; }) => {
+        json.forEach((app: { name: string; data: any }) => {
             const label = document.createElement('label');
             label.style.display = 'block';
-            label.innerHTML = `<input type='checkbox' value='${app.name}'> ${app.name}`;
-            label.querySelector('input').addEventListener('change', (e) => {
-            const isChecked = e.currentTarget.checked;
-            if (isChecked) {
-                selected.push(app);
-            } else {
-                selected = selected.filter(a => a.name !== app.name);
+            label.innerHTML = `<input type="checkbox" value="${app.name}"> ${app.name}`;
+            const input = label.querySelector('input');
+            if (input) {
+                input.addEventListener('change', (e) => {
+                    const checked = (e.currentTarget as HTMLInputElement).checked;
+                    if (checked) {
+                        selected.push(app);
+                    } else {
+                        selected = selected.filter(a => a.name !== app.name);
+                    }
+                    updatePreview();
+                });
             }
-            updatePreview();
-            });
             container.appendChild(label);
         });
-        }
-    });
-
-    fetch('/api/apps/chrome')
-    .then(res => res.json())
-    .then(json => {
-        apps = json;
-        const container = document.getElementById('app-form-chrome');
-        if (container) {
-        container.innerHTML = '';
-        apps.forEach((app: { name: any; }) => {
-            const label = document.createElement('label');
-            label.style.display = 'block';
-            label.innerHTML = `<input type='checkbox' value='${app.name}'> ${app.name}`;
-            label.querySelector('input').addEventListener('change', (e) => {
-            const isChecked = e.currentTarget.checked;
-            if (isChecked) {
-                selected.push(app);
-            } else {
-                selected = selected.filter(a => a.name !== app.name);
-            }
-            updatePreview();
-            });
-            container.appendChild(label);
         });
-        }
-    });
-
-    fetch('/api/apps/firefox')
-    .then(res => res.json())
-    .then(json => {
-        apps = json;
-        const container = document.getElementById('app-form-firefox');
-        if (container) {
-        container.innerHTML = '';
-        apps.forEach((app: { name: any; }) => {
-            const label = document.createElement('label');
-            label.style.display = 'block';
-            label.innerHTML = `<input type='checkbox' value='${app.name}'> ${app.name}`;
-            label.querySelector('input').addEventListener('change', (e) => {
-            const isChecked = e.currentTarget.checked;
-            if (isChecked) {
-                selected.push(app);
-            } else {
-                selected = selected.filter(a => a.name !== app.name);
-            }
-            updatePreview();
-            });
-            container.appendChild(label);
-        });
-        }
     });
 </script>
 <div>
