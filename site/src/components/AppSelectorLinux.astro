@@ -269,7 +269,7 @@ if __name__ == "__main__":
         URL.revokeObjectURL(url);
     }
 
-    fetch('/api/apps/linux')
+    fetch('/api/linux/apps')
     .then(res => res.json())
     .then(json => {
         apps = json;
@@ -294,7 +294,7 @@ if __name__ == "__main__":
         }
     });
    
-    fetch('/api/linux/edge')
+    fetch('/api/linux/apps-edge')
     .then(res => res.json())
     .then(json => {
         apps = json;
@@ -319,7 +319,7 @@ if __name__ == "__main__":
         }
     });
 
-    fetch('/api/apps/linux/chrome')
+    fetch('/api/linux/apps-chrome')
     .then(res => res.json())
     .then(json => {
         apps = json;
@@ -344,7 +344,7 @@ if __name__ == "__main__":
         }
     });
 
-    fetch('/api/apps/linux/firefox')
+    fetch('/api/linux/apps-firefox')
     .then(res => res.json())
     .then(json => {
         apps = json;
